@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="DTO\" />
+    <Folder Include="Events\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Solution.Domain.Core\Solution.Domain.Core.csproj" />
+    <ProjectReference Include="..\Solution.Infra.CrossCuting.Helpers\Solution.Infra.CrossCuting.Helpers.csproj" />
+  </ItemGroup>
+
+</Project>
