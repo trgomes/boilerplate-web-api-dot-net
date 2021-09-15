@@ -30,7 +30,7 @@ namespace Solution.Api.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] UserRegisterViewModel viewModel)
         {
-            _ = await _accountService.RegisterAsync(viewModel);
+            await _accountService.RegisterAsync(viewModel);
             return Response("Cadastro realizado com sucesso!");
         }
 
@@ -39,10 +39,7 @@ namespace Solution.Api.Controllers
         {
             var user = await _accountService.LoginAsync(viewModel);
 
-            if(user == null)
-            {
-                return Response(user);
-            }
+            if(user is null) return Response(user);
 
             return Response(new {
                 Token = _tokenService.GenerateJWT(user, appSettings.Value.Secret),
@@ -59,8 +56,7 @@ namespace Solution.Api.Controllers
         {
             var result = await _accountService.ChangePasswordAsync(viewModel);
 
-            if (!result)
-                return Response(result);
+            if (!result) return Response(result);
 
             return Response("Senha alterada com sucesso!");            
         }

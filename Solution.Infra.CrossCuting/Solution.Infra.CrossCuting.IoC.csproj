@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Solution.Application\Solution.Application.csproj" />
-    <ProjectReference Include="..\Solution.Infra.CrossCuting.Bus\Solution.Infra.CrossCuting.Bus.csproj" />
     <ProjectReference Include="..\Solution.Infra\Solution.Infra.csproj" />
   </ItemGroup>
 

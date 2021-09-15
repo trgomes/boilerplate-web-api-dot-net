@@ -9,8 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Serialization;
-using Serilog;
 using Solution.Api.Configurations.Setup;
 using Solution.Api.Filters;
 using Solution.Api.StartupConfiguration;
@@ -33,6 +31,10 @@ namespace Solution.Api
 
             // AutoMapper Settings
             services.AddAutoMapper(typeof(Startup));
+
+            //
+            // var assembly = AppDomain.CurrentDomain.Load("Solution.Domain");
+            // services.AddMediatR(assembly);
 
             // Authorization
             services.AddAuthorizationService(appSettings, defaultScheme);

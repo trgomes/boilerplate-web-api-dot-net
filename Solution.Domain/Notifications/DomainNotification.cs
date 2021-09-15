@@ -1,8 +1,8 @@
-﻿using Solution.Domain.Core.Events;
+﻿using MediatR;
 
 namespace Solution.Domain.Notifications
 {
-    public class DomainNotification : Event
+    public class DomainNotification : INotification
     {
         public string Key { get; private set; }
         public string Value { get; private set; }

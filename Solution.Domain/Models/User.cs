@@ -1,14 +1,14 @@
-﻿using Dapper.Contrib.Extensions;
+﻿using FluentValidation.Results;
 using Solution.Domain.Enums;
+using Solution.Domain.Validations;
 using Solution.Infra.CrossCuting.Helpers;
+using System;
 
 namespace Solution.Domain.Models
 {
-    [Table("users")]
     public class User
     {
-        [Key]
-        public int Id { get; private set; }
+        public Guid Id { get; private set; }
         public string Name { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
@@ -26,7 +26,7 @@ namespace Solution.Domain.Models
             Active = active;
         }
 
-        public User(int id, string name, string email, string password, EUserProfile profile = EUserProfile.User, bool active = true)
+        public User(Guid id, string name, string email, string password, EUserProfile profile = EUserProfile.User, bool active = true)
         {
             Id = id;
             Name = name;
@@ -34,6 +34,12 @@ namespace Solution.Domain.Models
             Password = !SecurePasswordHasher.IsHashSupported(password) ? SecurePasswordHasher.Hash(password) : password;
             Profile = profile;
             Active = active;
+        }
+
+        public ValidationResult Validate()
+        {
+            var validationResult = new UserValidation().Validate(this);
+            return validationResult;
         }
 
         public bool Authenticate(string email, string password)

@@ -1,35 +1,40 @@
 ﻿using FluentValidation.Results;
-using Solution.Domain.Core.Bus;
+using MediatR;
 using Solution.Domain.Notifications;
 using Solution.Domain.UoW;
 using System.Threading.Tasks;
 
-namespace Solution.Application.Services
+namespace Solution.Domain.UseCases
 {
-    public class Service
+    public class CommandHandler
     {
-        private readonly IMediatorHandler _bus;
+        protected readonly IMediator _mediator;
         private readonly IUnitOfWork _uow;
 
-        public Service(IUnitOfWork uow, IMediatorHandler bus)
+        public CommandHandler(IUnitOfWork uow, IMediator mediator)
         {
             _uow = uow;
-            _bus = bus;
+            _mediator = mediator;
         }
 
         protected void NotifyValidationErrors(ValidationResult validationResult)
         {
             foreach (var error in validationResult.Errors)
             {
-                _bus.RaiseEvent(new DomainNotification("Error", error.ErrorMessage));
+                _mediator.Publish(new DomainNotification("Error", error.ErrorMessage));
             }
+        }
+
+        protected void BeginTransaction()
+        {
+            _uow.BeginTransaction();
         }
 
         protected async Task<bool> Commit()
         {
             if (await _uow.Commit()) return true;
 
-            _ = _bus.RaiseEvent(new DomainNotification("Commit", "Ocorreu um problema ao salvar seus dados."));
+            await _mediator.Publish(new DomainNotification("Commit", "Ocorreu um problema ao salvar seus dados."));
             return false;
         }
     }

@@ -2,12 +2,14 @@
 using Microsoft.Extensions.DependencyInjection;
 using Solution.Application.Interfaces;
 using Solution.Application.Services;
-using Solution.Domain.Core.Bus;
+using Solution.Domain.Models;
 using Solution.Domain.Notifications;
 using Solution.Domain.Repositorie;
 using Solution.Domain.UoW;
+using Solution.Domain.UseCases.AccountUseCases.AuthenticateAccount;
+using Solution.Domain.UseCases.AccountUseCases.ChangeAccountPassword;
+using Solution.Domain.UseCases.AccountUseCases.RegisterNewAccount;
 using Solution.Infra.Context;
-using Solution.Infra.CrossCuting.Bus;
 using Solution.Infra.Repositories;
 using Solution.Infra.UoW;
 
@@ -17,13 +19,13 @@ namespace Solution.Infra.CrossCuting.IoC
     {
         public static void RegisterServices(IServiceCollection services, dynamic appSettings)
         {
-            // Domain Bus (Mediator)
-            services.AddScoped<IMediatorHandler, InMemoryBus>();
-
-            // Domain - Events
+            // Domain - Notifications
             services.AddScoped<INotificationHandler<DomainNotification>, DomainNotificationHandler>();
 
-            // Domain - Commands
+            // Domain - Handlers
+            services.AddScoped<IRequestHandler<RegisterNewAccountCommand, bool>, RegisterNewAccountCommandHandler>();
+            services.AddScoped<IRequestHandler<AuthenticateAccountCommand, User>, AuthenticateAccountCommandHandler>();
+            services.AddScoped<IRequestHandler<ChangeAccountPasswordCommand, bool>, ChangeAccountPasswordCommandHandler>();
 
             // Application 
             services.AddScoped<ITokenService, TokenService>();
@@ -34,7 +36,7 @@ namespace Solution.Infra.CrossCuting.IoC
             services.AddScoped<IDataContext>( _ => new DataContext(appSettings.ConnectionString));
 
             // Infra - Data - UoW
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             // Infra - Data - Repositories
             services.AddScoped<IUserRepository, UserRepository>();

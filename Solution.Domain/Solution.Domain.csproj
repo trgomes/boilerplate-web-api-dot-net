@@ -5,16 +5,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Events\**" />
+    <EmbeddedResource Remove="Events\**" />
+    <None Remove="Events\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="DTO\" />
-    <Folder Include="Events\" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Dapper.Contrib" Version="2.0.78" />
     <PackageReference Include="FluentValidation" Version="9.4.0" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Solution.Domain.Core\Solution.Domain.Core.csproj" />
     <ProjectReference Include="..\Solution.Infra.CrossCuting.Helpers\Solution.Infra.CrossCuting.Helpers.csproj" />
   </ItemGroup>
 
