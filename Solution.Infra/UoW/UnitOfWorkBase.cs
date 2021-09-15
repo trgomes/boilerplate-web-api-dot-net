@@ -12,11 +12,16 @@ namespace Solution.Infra.UoW
         public UnitOfWorkBase(IDataContext dataContext)
         {
             _dataContext = dataContext;
-        }        
+        }
+
+        public void BeginTransaction()
+        {
+            _dataContext.Transaction = _dataContext.Connection.BeginTransaction();
+        }
 
         public Task<bool> Commit()
         {
-            var success = false;
+            bool success;
 
             try
             {
@@ -29,21 +34,20 @@ namespace Solution.Infra.UoW
                 success = false;
             }
 
+            Dispose();
+
             return Task.FromResult(success);
         }
 
         public Task Rollback()
         {
             _dataContext.Transaction?.Rollback();
-            _dataContext.Connection?.Close();
-            _dataContext.Transaction?.Dispose();
+
+            Dispose();
 
             return Task.CompletedTask;
         }
 
-        public void Dispose()
-        {
-            _dataContext.Dispose();
-        }        
+        public void Dispose() => _dataContext.Transaction?.Dispose();        
     }
 }

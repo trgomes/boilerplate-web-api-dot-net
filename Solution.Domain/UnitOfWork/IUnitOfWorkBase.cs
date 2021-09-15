@@ -4,7 +4,7 @@ namespace Solution.Domain.UoW
 {
     public interface IUnitOfWorkBase
     {
-        void Dispose();
+        void BeginTransaction();
         Task<bool> Commit();
         Task Rollback();
     }

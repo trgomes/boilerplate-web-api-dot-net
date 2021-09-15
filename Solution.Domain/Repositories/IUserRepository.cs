@@ -1,11 +1,14 @@
 ﻿using Solution.Domain.Models;
-using Solution.Domain.Repositories;
+using System;
 using System.Threading.Tasks;
 
 namespace Solution.Domain.Repositorie
 {
-    public interface IUserRepository: IRepository<User>
+    public interface IUserRepository
     {
+        Task<int> AddUser(User user);
         Task<User> FindUserByEmailAsync(string email);
+        Task<int> UpdateUser(User user);
+        Task<int> DeleteUser(Guid userId);
     }
 }
