@@ -12,7 +12,6 @@ using Microsoft.Extensions.Logging;
 using Solution.Api.Configurations.Setup;
 using Solution.Api.Filters;
 using Solution.Api.StartupConfiguration;
-using System;
 
 namespace Solution.Api
 {
@@ -58,6 +57,7 @@ namespace Solution.Api
                     options.Filters.Add(new AuthorizeFilter(defaultScheme));
                     options.Filters.Add(typeof(CustomExceptionFilter));
                 })
+                .AddNewtonsoftJson()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);    
 
             services.AddHttpClient();
